@@ -1,0 +1,256 @@
+-[spede] ~ 
+11:29:10 $ ls
+bin  Desktop  Documents  Downloads  Pictures
+-[spede] ~ 
+11:29:15 $ cd Desktop
+-[spede] ~/Desktop 
+11:29:18 $ ls
+phase0-jmansyur
+-[spede] ~/Desktop 
+11:29:20 $ cd phase0-jmansyur
+-[spede] ~/Desktop/phase0-jmansyur {main *%=}
+11:29:30 $ ls
+01-hello-world	02-debugging  README.md
+-[spede] ~/Desktop/phase0-jmansyur {main *%=}
+11:29:31 $ cd 02-debugging
+-[spede] ~/Desktop/phase0-jmansyur/02-debugging {main *%=}
+11:29:35 $ ls
+build  Makefile  src
+-[spede] ~/Desktop/phase0-jmansyur/02-debugging {main *%=}
+11:29:38 $ make
+Done linking "build/MyOS.dli" (with GDB enabled) at 1m.
+-[spede] ~/Desktop/phase0-jmansyur/02-debugging {main *%=}
+11:29:39 $ spede-target
+Launching SPEDE target to run in the background
+-[spede] ~/Desktop/phase0-jmansyur/02-debugging {main *%=}
+11:29:53 $ spede-run -d
+The SPEDE Target will be reset, are you sure? (y/n) y
+Resetting the SPEDE Target...
+Downloading image 'build/MyOS.dli' to SPEDE Target via /dev/pts/1...
+File type is 'ELF'
+Total blocks to download:  0x83  (128 bytes each)
+
+Load Successful ; Code loaded at 0x0x101000 (1052 bytes/sec)
+Executing the image 'build/MyOS.dli' on the SPEDE Target with GDB Enabled
+Launching GDB...
+Reading symbols from build/MyOS.dli...
+Expanding full symbols from build/MyOS.dli...
+Remote debugging using /dev/pts/1
+0x00102685 in breakpoint ()
+Temporary breakpoint 1 at 0x101206: file src/main.c, line 40.
+
+Temporary breakpoint 1, main () at src/main.c:40
+40	    char buf[128] = {0};
+SPEDE GDB$ continue
+Continuing.
+Hello, world!
+Welcome to MyOS!
+NULL pointer!
+The buffer size is 17 bytes
+NULL pointer!
+CPE/CSC 159 for Spring/Fall 1970 will be fun!
+[Inferior 1 (Remote target) exited normally]
+SPEDE GDB$ break puts
+Breakpoint 2 at 0x10119b: file src/main.c, line 24.
+SPEDE GDB$ info break
+Num     Type           Disp Enb Address    What
+2       breakpoint     keep y   0x0010119b in puts at src/main.c:24
+SPEDE GDB$ continue
+The program is not being run.
+SPEDE GDB$ spede-run -d
+Undefined command: "spede-run".  Try "help".
+SPEDE GDB$ help
+List of classes of commands:
+
+aliases -- User-defined aliases of other commands.
+breakpoints -- Making program stop at certain points.
+data -- Examining data.
+files -- Specifying and examining files.
+internals -- Maintenance commands.
+obscure -- Obscure features.
+running -- Running the program.
+stack -- Examining the stack.
+status -- Status inquiries.
+support -- Support facilities.
+text-user-interface -- TUI is the GDB text based interface.
+tracepoints -- Tracing of program execution without stopping the program.
+user-defined -- User-defined commands.
+
+Type "help" followed by a class name for a list of commands in that class.
+Type "help all" for the list of all commands.
+Type "help" followed by command name for full documentation.
+Type "apropos word" to search for commands related to "word".
+Type "apropos -v word" for full documentation of commands related to "word".
+Command name abbreviations are allowed if unambiguous.
+SPEDE GDB$ breakpoints
+Undefined command: "breakpoints".  Try "help".
+SPEDE GDB$ quit
+-[spede] ~/Desktop/phase0-jmansyur/02-debugging {main *%=}
+11:44:55 $ spede-run -d
+The SPEDE Target will be reset, are you sure? (y/n) y
+Resetting the SPEDE Target...
+Downloading image 'build/MyOS.dli' to SPEDE Target via /dev/pts/1...
+File type is 'ELF'
+Total blocks to download:  0x83  (128 bytes each)
+
+Load Successful ; Code loaded at 0x0x101000 (1052 bytes/sec)
+Executing the image 'build/MyOS.dli' on the SPEDE Target with GDB Enabled
+Launching GDB...
+Reading symbols from build/MyOS.dli...
+Expanding full symbols from build/MyOS.dli...
+Remote debugging using /dev/pts/1
+0x00102685 in breakpoint ()
+Temporary breakpoint 1 at 0x101206: file src/main.c, line 40.
+
+Temporary breakpoint 1, main () at src/main.c:40
+40	    char buf[128] = {0};
+SPEDE GDB$ info break
+No breakpoints or watchpoints.
+SPEDE GDB$ break puts
+Breakpoint 2 at 0x10119b: file src/main.c, line 24.
+SPEDE GDB$ info break
+Num     Type           Disp Enb Address    What
+2       breakpoint     keep y   0x0010119b in puts at src/main.c:24
+SPEDE GDB$ 
+Num     Type           Disp Enb Address    What
+2       breakpoint     keep y   0x0010119b in puts at src/main.c:24
+SPEDE GDB$ continue
+Continuing.
+Hello, world!
+Welcome to MyOS!
+
+Breakpoint 2, puts (str=0x10422f "Hello, World!\n") at src/main.c:24
+24	    if (str) {
+SPEDE GDB$ list
+19	/**
+20	 * Prints a string to the screen starting at 0, 0
+21	 * @param str pointer to the string to print
+22	 */
+23	void puts(char *str) {
+24	    if (str) {
+25	        printf("NULL pointer!\n");
+26	        return;
+27	    }
+28	
+SPEDE GDB$ print str
+$1 = 0x10422f "Hello, World!\n"
+SPEDE GDB$ step
+25	        printf("NULL pointer!\n");
+SPEDE GDB$ step
+NULL pointer!
+26	        return;
+SPEDE GDB$ continue
+Continuing.
+The buffer size is 17 bytes
+
+Breakpoint 2, puts (str=0x10dfc "welcome to MyOS!\n") at src/main.c:24
+24	    if (str) {
+SPEDE GDB$ jump +3
+Continuing at 0x1011b3.
+CPE/CSC 159 for Spring/Fall 1970 will be fun!
+[Inferior 1 (Remote target) exited normally]
+SPEDE GDB$ break strlen
+Breakpoint 3 at 0x101178: file src/main.c, line 10.
+SPEDE GDB$ info break
+Num     Type           Disp Enb Address    What
+2       breakpoint     keep y   0x0010119b in puts at src/main.c:24
+	breakpoint already hit 2 times
+3       breakpoint     keep y   0x00101178 in strlen at src/main.c:10
+SPEDE GDB$ continue
+The program is not being run.
+SPEDE GDB$ backtrace
+No stack.
+SPEDE GDB$ info args
+No frame selected.
+SPEDE GDB$ spede-run
+Undefined command: "spede-run".  Try "help".
+SPEDE GDB$ 
+Undefined command: "spede-run".  Try "help".
+SPEDE GDB$ quit
+-[spede] ~/Desktop/phase0-jmansyur/02-debugging {main *%=}
+12:13:57 $ 
+-[spede] ~/Desktop/phase0-jmansyur/02-debugging {main *%=}
+12:13:59 $ spede-run -d
+The SPEDE Target will be reset, are you sure? (y/n) y
+Resetting the SPEDE Target...
+Downloading image 'build/MyOS.dli' to SPEDE Target via /dev/pts/1...
+File type is 'ELF'
+Total blocks to download:  0x83  (128 bytes each)
+
+Load Successful ; Code loaded at 0x0x101000 (990 bytes/sec)
+Executing the image 'build/MyOS.dli' on the SPEDE Target with GDB Enabled
+Launching GDB...
+Reading symbols from build/MyOS.dli...
+Expanding full symbols from build/MyOS.dli...
+Remote debugging using /dev/pts/1
+0x00102685 in breakpoint ()
+Temporary breakpoint 1 at 0x101206: file src/main.c, line 40.
+
+Temporary breakpoint 1, main () at src/main.c:40
+40	    char buf[128] = {0};
+SPEDE GDB$ break strlen
+Breakpoint 2 at 0x101178: file src/main.c, line 10.
+SPEDE GDB$ info break
+Num     Type           Disp Enb Address    What
+2       breakpoint     keep y   0x00101178 in strlen at src/main.c:10
+SPEDE GDB$ continue
+Continuing.
+Hello, world!
+Welcome to MyOS!
+NULL pointer!
+
+Breakpoint 2, strlen (str=0x10dfc "welcome to MyOS!\n") at src/main.c:10
+10	    size_t len = 0;
+SPEDE GDB$ backtrace
+#0  strlen (str=0x10dfc "welcome to MyOS!\n") at src/main.c:10
+#1  0x00101295 in main () at src/main.c:51
+SPEDE GDB$ info args
+str = 0x10dfc "welcome to MyOS!\n"
+SPEDE GDB$ info break
+Num     Type           Disp Enb Address    What
+2       breakpoint     keep y   0x00101178 in strlen at src/main.c:10
+	breakpoint already hit 1 time
+SPEDE GDB$ delete 2
+SPEDE GDB$ info break
+No breakpoints or watchpoints.
+SPEDE GDB$ break main.c:52
+Breakpoint 3 at 0x1012a9: file src/main.c, line 52.
+SPEDE GDB$ break main.c:54
+Breakpoint 4 at 0x1012bb: file src/main.c, line 54.
+SPEDE GDB$ continue
+Continuing.
+The buffer size is 17 bytes
+
+Breakpoint 3, main () at src/main.c:52
+52	    puts(buf);
+SPEDE GDB$ print buf
+$1 = "welcome to MyOS!\n", '\000' <repeats 110 times>
+SPEDE GDB$ set buf[0] = 'W'
+SPEDE GDB$ print buf
+$2 = "Welcome to MyOS!\n", '\000' <repeats 110 times>
+SPEDE GDB$ continue
+Continuing.
+NULL pointer!
+
+Breakpoint 4, main () at src/main.c:54
+54	    printf("CPE/CSC 159 for Spring/Fall %d will be fun!\n", year);
+SPEDE GDB$ print year
+$3 = 0x7b2
+SPEDE GDB$ 
+$4 = 0x7b2
+SPEDE GDB$ print /d year
+$5 = 1970
+SPEDE GDB$ set year=2025
+SPEDE GDB$ print /d year
+$6 = 8229
+SPEDE GDB$ print year
+$7 = 0x2025
+SPEDE GDB$ set year=2025.
+SPEDE GDB$ print /d year
+$8 = 2025
+SPEDE GDB$ continue
+Continuing.
+CPE/CSC 159 for Spring/Fall 2025 will be fun!
+[Inferior 1 (Remote target) exited normally]
+SPEDE GDB$ 
+
